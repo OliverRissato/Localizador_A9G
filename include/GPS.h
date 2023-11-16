@@ -14,34 +14,29 @@
 
 using namespace std;
 
-/* Typedef used to opaque pointer to GPS_t handler */
-typedef struct GPS_struct_t GPS_t;
+class GPS
+{
+public:
+    GPS();
 
-/******************************************************************************
-* Function Prototype Section
-******************************************************************************/
+    uint8_t SetGGA(string GGASentence);
 
-/**
- * Function used to initialize the MOTOR controller
- *
- * @param config Structure pointer with configurations
- * @return MOTOR_t handler to be used, NULL if failed
- * */
-GPS_t* GPS_Init(void);
+    double GetLatitude();
 
-uint8_t GPS_SetGGA(GPS_t* gps, string GGASentence);
+    double GetLongitude();
 
-double GPS_GetLatitude(GPS_t* gps);
+    double GetSpeed();
 
-double GPS_GetLongitude(GPS_t* gps);
-
-double GPS_GetSpeed(GPS_t* gps);
-
-
-
-
-
-
+private:
+    int     UTC;
+    double  latitude;
+    double  longitude;
+    double  altitude;
+    double  speed;
+    double  heading;
+    int     numberSatellites;
+    int     date;
+};
 
 
 

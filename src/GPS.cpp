@@ -11,17 +11,17 @@
 * Defines section
 ******************************************************************************/
 
-struct GPS_struct_t
+GPS::GPS()
 {
-    int     UTC;
-    double  latitude;
-    double  longitude;
-    double  altitude;
-    double  speed;
-    double  heading;
-    int     numberSatellites;
-    int     date;
-};
+    UTC                 = 0;
+    latitude            = 0;
+    longitude           = 0;
+    altitude            = 0;
+    numberSatellites    = 0;
+    speed               = 0;
+    heading             = 0;
+    date                = 0;
+}
 
 /******************************************************************************
 * Forward declarations
@@ -125,32 +125,7 @@ bool _isValidGGA(const string GGASentence){
 /******************************************************************************
 * Function Definition Section
 ******************************************************************************/
-
-GPS_t* GPS_Init(void)
-{
-    GPS_t* gps;
-    gps = (GPS_t*)malloc(sizeof(GPS_t));
-
-    if(gps != NULL)
-    {
-        gps->UTC = 0;
-        gps->latitude = 0;
-        gps->longitude = 0;
-        gps->altitude = 0;
-        gps->speed = 0;
-        gps->heading = 0;
-        gps->numberSatellites = 0;
-        gps->date = 0;
-    }
-    else
-    {
-        /* do nothing */
-    }
-
-    return gps;
-}
-
-uint8_t GPS_SetGGA(GPS_t* gps, string GGASentence)
+uint8_t GPS::SetGGA(string GGASentence)
 {
     uint8_t success = 0;
     
@@ -160,13 +135,13 @@ uint8_t GPS_SetGGA(GPS_t* gps, string GGASentence)
         // Assert we have a GGA sentence
         assert(elementVector[0] == "+GPSRD:$GNGGA");
 
-        gps->UTC                 = atoi(elementVector[1].c_str());
-        gps->latitude            = _GpsToDecimalDegrees(elementVector[2]);
-        if (elementVector[3] == "S") gps->latitude  = (gps->latitude * (-1.0f));
-        gps->longitude           = _GpsToDecimalDegrees(elementVector[4]);
-        if (elementVector[5] == "W") gps->longitude  = (gps->longitude * (-1.0f));
-        gps->altitude            = _stringToDouble(elementVector[9]);
-        gps->numberSatellites    = atoi(elementVector[7].c_str());
+        this->UTC                 = atoi(elementVector[1].c_str());
+        this->latitude            = _GpsToDecimalDegrees(elementVector[2]);
+        if (elementVector[3] == "S") this->latitude  = (this->latitude * (-1.0f));
+        this->longitude           = _GpsToDecimalDegrees(elementVector[4]);
+        if (elementVector[5] == "W") this->longitude  = (this->longitude * (-1.0f));
+        this->altitude            = _stringToDouble(elementVector[9]);
+        this->numberSatellites    = atoi(elementVector[7].c_str());
 
         success = 1;
     }
@@ -178,23 +153,17 @@ uint8_t GPS_SetGGA(GPS_t* gps, string GGASentence)
     return success;
 }
 
-double GPS_GetLatitude(GPS_t* gps)
+double  GPS::GetLatitude()
 {
-    assert(gps != NULL);
-
-    return gps->latitude;
+    return this->latitude;
 }
 
-double GPS_GetLongitude(GPS_t* gps)
+double GPS::GetLongitude()
 {
-    assert(gps != NULL);
-
-    return gps->longitude;
+    return this->longitude;
 }
 
-double GPS_GetSpeed(GPS_t* gps)
+double GPS::GetSpeed()
 {
-    assert(gps != NULL);
-
-    return gps->speed;
+    return this->speed;
 }
